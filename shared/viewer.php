@@ -9,7 +9,6 @@
 
     <!-- div id="bookmarkURLDiv"></div -->
 
-    <!-- TODO: Check Lymph query parm -->
     <div id="weightpanel">
         <a href='#'>
             <div id='closeWeightPanel'><img src='images/ic_close_white_24px.svg' title='Close' alt="Close X" height="16"
@@ -79,7 +78,6 @@
         </a>
         <h6><img src="images/switch_user.svg" alt="Switch user" height="30" width="30"> Change username to:</h6><br/>
     </div>
-    <!-- End TODO: Check Lymph -->
 
     <div id="algosel">
         <div id="tree"></div>
@@ -99,13 +97,11 @@
 
 <script type="text/javascript">
     $.noConflict();
-    var annotool = null;
+    var annotool, x = null;
     var tissueId = <?php echo json_encode($_GET['tissueId']); ?>;
-
-    var cancerType = "<?php echo $_SESSION["cancerType"] ?>"; // TODO:
-
-    console.log("cancerType is: " + cancerType);
-    console.log("tissueId is: " + tissueId);
+    console.log("tissueId is: " + x);
+    var cancerType = "<?php echo $_SESSION["cancerType"] ?>";
+    console.log("cancerType is: " + x);
 
     var imagedata = new OSDImageMetaData({imageId: tissueId});
     //console.log(imagedata);
@@ -143,7 +139,7 @@
     viewer.clearControls();
     viewer.open("<?php print_r($config['fastcgi_server']); ?>?DeepZoom=" + fileLocation);
     var imagingHelper = new OpenSeadragonImaging.ImagingHelper({viewer: viewer});
-    imagingHelper.setMaxZoom(2); // TODO:
+    imagingHelper.setMaxZoom(2); // TODO: 2 or 1 ?
     //console.log(this.MPP);
     viewer.scalebar({
         type: OpenSeadragon.ScalebarType.MAP,
@@ -197,10 +193,10 @@
         annotool = new annotools({
             canvas: 'openseadragon-canvas',
             iid: tissueId,
-            cancerType: cancerType, // TODO:
             viewer: viewer,
             annotationHandler: annotationHandler,
             mpp: MPP,
+            cancerType: cancerType, // TODO:
             username: sessionUsername
         });
         filteringtools = new FilterTools(); // TODO:
@@ -212,9 +208,9 @@
             height: '48px',
             width: '100%',
             iid: tissueId,
-            cancerType: cancerType, // TODO:
             annotool: annotool,
-            FilterTools: filteringtools
+            FilterTools: filteringtools,
+            cancerType: cancerType // TODO:
         });
 
         annotool.toolBar = toolBar;
@@ -224,7 +220,7 @@
         //var panel = new panel();
         jQuery("#panel").hide();
 
-        // TODO:
+        /* weight / markup / switch user */
         jQuery("#weightpanel").hide();
         jQuery("#markuppanel").hide();
         jQuery("#switchuserpanel").hide();
@@ -246,7 +242,6 @@
             annotool.addMouseEvents();
         });
 
-        // TODO:
         var user_email = "<?php echo $_SESSION["email"]; ?>";
         console.log("user_email :" + user_email);
 
@@ -261,7 +256,8 @@
         /*Pan and zoom to point*/
         var bound_x = <?php echo json_encode($_GET['x']); ?>;
         var bound_y = <?php echo json_encode($_GET['y']); ?>;
-        var zoomTmp = <?php echo json_encode($_GET['zoom']); ?> || viewer.viewport.getMaxZoom();
+        var zoomTmp = <?php echo json_encode($_GET['zoom']); ?> ||
+        viewer.viewport.getMaxZoom();
         var zoom = Number(zoomTmp); // convert string to number if zoom is string
 
         /*
@@ -299,8 +295,7 @@
         }
     }//end of addOverlays()
 
-    function checkState()
-    {
+    function checkState() {
         var stateID = <?php echo json_encode($_GET['stateID']); ?>;
         //Check if loading from saved state
         if (stateID) {
@@ -335,7 +330,7 @@
                         var filterName = f.name;
 
                         jQuery("#" + filterName + "_add").click();
-                        if (filterName == "SobelEdge") {
+                        if (filterName === "SobelEdge") {
                             console.log("sobel");
                         } else {
                             jQuery("#control" + filterName).val(1 * f.value);
