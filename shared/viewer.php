@@ -97,14 +97,14 @@
 
 <script type="text/javascript">
     $.noConflict();
-    var annotool, x = null;
+    var annotool = null;
     var tissueId = <?php echo json_encode($_GET['tissueId']); ?>;
-    console.log("tissueId is: " + x);
+    console.log("tissueId is: " + tissueId);
     var cancerType = "<?php echo $_SESSION["cancerType"] ?>";
-    console.log("cancerType is: " + x);
+    console.log("cancerType is: " + cancerType);
 
     var imagedata = new OSDImageMetaData({imageId: tissueId});
-    //console.log(imagedata);
+    //console.log("imagedata: ", imagedata);
 
     var MPP = imagedata.metaData[0];
     console.log(MPP);
