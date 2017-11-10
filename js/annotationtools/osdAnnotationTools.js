@@ -2869,7 +2869,7 @@ function pollOrder(id, cb) {
         // console.log("data.state", data.state);
 
         if (data.state.contains("fail")) {
-            cb({"error": "failed", data});
+            cb({"error": "failed", data});// TODO:
             return;
         }
         if (data.state.contains("comp")) { // is completed?

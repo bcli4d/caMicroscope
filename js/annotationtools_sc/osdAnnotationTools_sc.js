@@ -2607,7 +2607,7 @@ function pollOrder(id, cb){
   jQuery.get("api/Data/compositeOrder.php?id="+id, function(data){ 
     //console.log(data.state);
     if(data.state.contains("fail")){
-      cb({"error": "failed", data});
+      cb({"error": "failed", data}); // TODO:
 	  console.log("kue job id is: "+ id);
       console.log("kue job state is: "+ data.state);
       return;
@@ -2616,7 +2616,7 @@ function pollOrder(id, cb){
      cb(null, data);
 	 console.log("kue job id is: "+ id);
      console.log("kue job state is: "+ data.state);
-     return;
+     return; // TODO:
     } else {
       console.log("kue job id is: "+ id);
       console.log("kue job state is: "+ data.state);
